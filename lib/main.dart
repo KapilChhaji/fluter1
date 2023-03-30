@@ -35,7 +35,6 @@ class _Listex extends State<Listex> {
   List<Method> items = [];
   List<Method> newList = [];
   List<Method> fave = [];
-  bool fav = true;
   final controllerg = TextEditingController();
 
   @override
@@ -61,89 +60,55 @@ class _Listex extends State<Listex> {
     });
   }
 
-
-  ListView showlsit(List newList){
+  ListView showlsit(List newList) {
     return ListView.builder(
         itemCount: newList.length,
         itemBuilder: ((context, index) {
           return ListTile(
-              textColor: (index % 2 == 0)
-                  ? Colors.red
-                  : Colors.blue,
+              textColor: (index % 2 == 0) ? Colors.red : Colors.blue,
               title: Row(
-                  mainAxisAlignment:
-                  MainAxisAlignment
-                      .spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     CircleAvatar(
-                        backgroundColor:
-                        Colors.grey,
+                        backgroundColor: Colors.grey,
                         child: Text(
-                          newList[index]
-                              .name[0]
-                              +newList[index]
-                              .lastname[0],
-                          style: const TextStyle(
-                              color: Colors
-                                  .black),
+                          newList[index].name[0] + newList[index].lastname[0],
+                          style: const TextStyle(color: Colors.black),
                         )),
                     Expanded(
-                      child:Padding(
+                      child: Padding(
                         padding: const EdgeInsets.only(left: 15.0),
                         child: Column(
-                          crossAxisAlignment:
-                          CrossAxisAlignment
-                              .start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(newList[
-                            index]
-                                .name +
-                                " "+newList[
-                            index]
-                                .lastname),
-
-                            Text(newList[index]
-                                .email),
-                            Text(newList[index]
-                                .mobile),
+                            Text(newList[index].name +
+                                " " +
+                                newList[index].lastname),
+                            Text(newList[index].email),
+                            Text(newList[index].mobile),
                           ],
                         ),
                       ),
                     ),
-                    newList[index].fav
-                        ?
                     TextButton(
                       onPressed: () {
                         setState(() {
-                          fave.add(Method(name: newList[index].name, lastname: newList[index].lastname, email: newList[index].email, mobile: newList[index].mobile, fav: newList[index].fav));
-                          newList[index].fav=! newList[index].fav;
+                          if (fave.contains(newList[index])) {
+                            fave.remove(newList[index]);
+                          } else {
+                            fave.add(newList[index]);
+                          }
                         });
                       },
-                      child: const Text(
-                        'Fav',
-                        style:
-                        TextStyle(
-                            fontSize: 20),
-                      ),
-                    ):
-                    TextButton(
-                      onPressed: () {
-                        setState(() {
-                          fave.removeWhere((element) => element.fav);
-                          newList[index].fav=! newList[index].fav;
-                        //  fave[index].fav=! fave[index].fav;
-                        });
-                      },
-                      child: const Text( "Unfav",
-                        style:
-                        TextStyle(
-                            fontSize: 20),
+                      child: Text(
+                        fave.contains(newList[index]) ? "Unfav" : 'Fav',
+                        style: const TextStyle(fontSize: 20),
                       ),
                     ),
                   ]));
         }));
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -173,14 +138,12 @@ class _Listex extends State<Listex> {
                               if (value?.name != "" &&
                                   value?.lastname != "" &&
                                   value?.email != "" &&
-                                  value?.mobile != "" &&
-                                  value?.fav != "") {
+                                  value?.mobile != "") {
                                 items.add(Method(
                                     name: value!.name,
                                     lastname: value.lastname,
                                     email: value.email,
-                                    mobile: value.mobile,
-                                    fav: value.fav));
+                                    mobile: value.mobile));
                               }
                             }));
                   },
@@ -207,156 +170,23 @@ class _Listex extends State<Listex> {
                         ),
                         Container(
                             height: 300, //height of TabBarView
-                          //  decoration: const BoxDecoration(
-                               // border: Border(
-                                 //   top: BorderSide(
-                                  //      color: Colors.grey, width: 0.5))),
+                            //  decoration: const BoxDecoration(
+                            // border: Border(
+                            //   top: BorderSide(
+                            //      color: Colors.grey, width: 0.5))),
                             child: TabBarView(children: <Widget>[
-                              Column(
-                                children: [
-                                  TextField(
-                                    onChanged: (value) => runfilter(value),
-                                    decoration: const InputDecoration(
-                                        hintText: "Search",
-                                        suffixIcon: Icon(Icons.search)),
-                                  ),
-                                  Expanded(
-
-                                    child:showlsit(newList),
-                                      // child: ListView.builder(
-                                      //     itemCount: newList.length,
-                                      //     itemBuilder: ((context, index) {
-                                      //       return ListTile(
-                                      //           textColor: (index % 2 == 0)
-                                      //               ? Colors.red
-                                      //               : Colors.blue,
-                                      //           title: Row(
-                                      //               mainAxisAlignment:
-                                      //                   MainAxisAlignment
-                                      //                       .spaceBetween,
-                                      //               children: [
-                                      //                 CircleAvatar(
-                                      //                     backgroundColor:
-                                      //                         Colors.grey,
-                                      //                     child: Text(
-                                      //                       newList[index]
-                                      //                           .name[0]
-                                      //                       +newList[index]
-                                      //                           .lastname[0],
-                                      //                       style: const TextStyle(
-                                      //                           color: Colors
-                                      //                               .black),
-                                      //                     )),
-                                      //                 Expanded(
-                                      //                  child:Padding(
-                                      //                    padding: const EdgeInsets.only(left: 15.0),
-                                      //                    child: Column(
-                                      //                     crossAxisAlignment:
-                                      //                         CrossAxisAlignment
-                                      //                             .start,
-                                      //                     children: [
-                                      //                       Text(newList[
-                                      //                                   index]
-                                      //                               .name +
-                                      //                           " "+newList[
-                                      //                       index]
-                                      //                           .lastname),
-                                      //
-                                      //                       Text(newList[index]
-                                      //                           .email),
-                                      //                       Text(newList[index]
-                                      //                           .mobile),
-                                      //                     ],
-                                      //                 ),
-                                      //                  ),
-                                      //                 ),
-                                      //
-                                      //                 TextButton(
-                                      //                   onPressed: () {
-                                      //                     setState(() {
-                                      //                       newList[index].fav =
-                                      //                           !newList[index]
-                                      //                               .fav;
-                                      //                     });
-                                      //                   },
-                                      //                   child: Text(
-                                      //                     newList[index].fav
-                                      //                         ? 'Fav'
-                                      //                         : "Unfav",
-                                      //                     style:
-                                      //                         const TextStyle(
-                                      //                             fontSize: 20),
-                                      //                   ),
-                                      //                 ),
-                                      //               ]));
-                                      //     }))),
-                                  ),
-          ]
-                              ),
-
+                              Column(children: [
+                                TextField(
+                                  onChanged: (value) => runfilter(value),
+                                  decoration: const InputDecoration(
+                                      hintText: "Search",
+                                      suffixIcon: Icon(Icons.search)),
+                                ),
+                                Expanded(
+                                  child: showlsit(newList),
+                                ),
+                              ]),
                               showlsit(fave)
-                              // ListView.builder(
-                              //     itemCount: newList.length,
-                              //     itemBuilder: ((context, index) {
-                              //       return newList[index].fav
-                              //           ? const Text("")
-                              //           : ListTile(
-                              //           textColor: (index % 2 == 0)
-                              //               ? Colors.red
-                              //               : Colors.blue,
-                              //           title: Row(
-                              //               mainAxisAlignment:
-                              //               MainAxisAlignment
-                              //                   .spaceBetween,
-                              //               children: [
-                              //                 CircleAvatar(
-                              //                     backgroundColor:
-                              //                     Colors.grey,
-                              //                     child: Text(
-                              //                       newList[index]
-                              //                           .name[0]
-                              //                           +newList[index]
-                              //                           .lastname[0],
-                              //                       style: const TextStyle(
-                              //                           color: Colors
-                              //                               .black),
-                              //                     )),
-                              //                 Expanded(
-                              //                   child:Padding(
-                              //                     padding: const EdgeInsets.only(left: 15.0),
-                              //                     child: Column(
-                              //                       crossAxisAlignment:
-                              //                       CrossAxisAlignment
-                              //                           .start,
-                              //                       children: [
-                              //                         Text(newList[
-                              //                         index]
-                              //                             .name +
-                              //                             " "+newList[
-                              //                         index]
-                              //                             .lastname),
-                              //
-                              //                         Text(newList[index]
-                              //                             .email),
-                              //                         Text(newList[index]
-                              //                             .mobile),
-                              //                       ],
-                              //                     ),
-                              //                   ),
-                              //                 ),
-                              //                 TextButton(
-                              //                   onPressed: () {
-                              //                     setState(() {
-                              //                       newList[index].fav =
-                              //                       !newList[index].fav;
-                              //                     });
-                              //                   },
-                              //                   child: const Text("Un fav", style:
-                              //                   const TextStyle(
-                              //                       fontSize: 20),),
-                              //                 )
-                              //               ]));
-                              //     })),
                             ]))
                       ]))
             ])));

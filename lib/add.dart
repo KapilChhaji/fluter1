@@ -118,7 +118,7 @@ class _Add extends State<Add> {
                           lastname: _controllerlast.text,
                           email: _controlleremail.text,
                           mobile: _controllermobile.text,
-                        fav: true,);
+                       );
 
                       Navigator.pop(context, data);
                     } else {}
@@ -137,13 +137,12 @@ class Method {
   late String lastname;
   late String email;
   late String mobile;
-  late bool fav;
+
 
   Method(
       {required this.name,
       required this.lastname,
       required this.email,
       required this.mobile,
-      required this.fav
       });
 }
